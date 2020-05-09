@@ -36,16 +36,11 @@ public class MainActivity extends AppCompatActivity {
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                // Explain request for permission and try again
                 Toast.makeText(MainActivity.this, "PhotoML can't function with No Storage Permissions!", Toast.LENGTH_SHORT).show();
             } else {
-                // No explanation needed; request the permission
+                // Request the permission
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
