@@ -2,6 +2,8 @@ package com.baijudodhia.photoml.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +19,6 @@ public class FullImage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullimage);
-//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -27,5 +28,28 @@ public class FullImage extends AppCompatActivity {
         Glide.with(this)
                 .load(imagePath)
                 .into(fullImageView);
+    }
+
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actionbar_fullimage, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_actionbar_label) {
+            //Call method to perform Label Detection
+        }
+        if (id == R.id.menu_actionbar_ocr) {
+            //Call method to perform OCR
+        }
+        if (id == R.id.menu_actionbar_face) {
+            //Call method to perform Face Detection
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

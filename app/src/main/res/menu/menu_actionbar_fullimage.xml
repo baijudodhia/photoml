@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_actionbar_label"
+        android:orderInCategory="1"
+        android:title="label"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_actionbar_ocr"
+        android:orderInCategory="2"
+        android:title="OCR"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_actionbar_face"
+        android:orderInCategory="3"
+        android:title="face"
+        app:showAsAction="ifRoom" />
+</menu>
