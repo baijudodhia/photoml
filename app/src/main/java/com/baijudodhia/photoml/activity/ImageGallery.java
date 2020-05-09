@@ -1,10 +1,9 @@
 package com.baijudodhia.photoml.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.text.Html;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,6 +25,8 @@ public class ImageGallery extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagegallery);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000\">Photos</font>"));
         imagesList = getIntent().getStringArrayListExtra("imagesList");
         RecyclerView recyclerView = findViewById(R.id.Activity_RecyclerViewPhotoGallery);
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
