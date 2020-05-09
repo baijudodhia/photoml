@@ -19,7 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ImageGallery" />
-        <activity android:name=".activity.FullImage" />
+        <activity
+            android:name=".activity.FullImage"
+            android:parentActivityName=".activity.ImageGallery"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
     </application>
 
 </manifest>
