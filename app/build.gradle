@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+//Used for Firebase ML-Kit
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -45,4 +48,7 @@ dependencies {
 
     //PhotoView Dependency for auto image zooming and double tap and pinch zoom replacing ImageView
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+    //Firebase ML-Kit recongnize and label images dependency
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
 }
