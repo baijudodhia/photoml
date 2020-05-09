@@ -50,6 +50,9 @@ public class FullImage extends AppCompatActivity {
         if (id == R.id.menu_actionbar_face) {
             //Call method to perform Face Detection
         }
+        if (id == R.id.menu_actionbar_barcode) {
+            //Call method to perform Barcode Detection
+        }
         return super.onOptionsItemSelected(item);
     }
 }
