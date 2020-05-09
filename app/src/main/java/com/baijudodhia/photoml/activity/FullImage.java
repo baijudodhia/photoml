@@ -107,7 +107,7 @@ public class FullImage extends AppCompatActivity {
                             float confidence = label.getConfidence();
                             //Only add labels with confidence greater than 0.5
                             if (confidence > 0) {
-                                labeltext.add(text + " [" + String.format("%.2f", confidence) + "]");
+                                labeltext.add(text + " [" + String.format("%.2f", confidence) + " conf]");
                             }
                         }
                         if (labels.size() != 0) {
