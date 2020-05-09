@@ -38,6 +38,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(holder.Adapter_ImageViewItem.getContext())
                 .load(mData.get(position))
+                .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.Adapter_ImageViewItem);
     }
 

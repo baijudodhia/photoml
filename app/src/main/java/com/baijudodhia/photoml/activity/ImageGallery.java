@@ -1,10 +1,12 @@
 package com.baijudodhia.photoml.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.widget.Gallery;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +38,9 @@ public class ImageGallery extends AppCompatActivity {
         imageGalleryAdapter.setClickListener(new ImageGalleryAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(ImageGallery.this, imagesList.get(position), Toast.LENGTH_SHORT).show();
+                Intent fullimage = new Intent(ImageGallery.this, FullImage.class);
+                fullimage.putExtra("imagePath", imagesList.get(position));
+                startActivity(fullimage);
             }
         });
     }
