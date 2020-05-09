@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.baijudodhia.photoml.R;
+import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().hide();
+
+        //Initialize FirebaseApp on PhotoML App start
+        FirebaseApp.initializeApp(this);
 
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
