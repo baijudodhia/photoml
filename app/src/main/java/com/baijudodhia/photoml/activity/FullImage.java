@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
+import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
@@ -78,6 +80,7 @@ public class FullImage extends AppCompatActivity {
         }
         if (id == R.id.menu_actionbar_barcode) {
             //Call method to perform Barcode Detection
+            BarcodeDetection();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -155,7 +158,6 @@ public class FullImage extends AppCompatActivity {
                     }
                 });
     }
-
 
     public void OCRDetection() {
         final StringBuilder builder = new StringBuilder();
@@ -276,5 +278,74 @@ public class FullImage extends AppCompatActivity {
                                 ShowDetection("Face Detection", builder);
                             }
                         });
+    }
+
+    //Barcode Detection
+    public void BarcodeDetection() {
+        final StringBuilder builder = new StringBuilder();
+        BitmapDrawable drawable = (BitmapDrawable) fullImageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector();
+        detector.detectInImage(image)
+                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
+                    @Override
+                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
+                        // Task completed successfully
+                        for (FirebaseVisionBarcode barcode : barcodes) {
+                            /* Not used for display
+                            Rect bounds = barcode.getBoundingBox();
+                            Point[] corners = barcode.getCornerPoints();
+                            String rawValue = barcode.getRawValue();
+                            */
+                            int valueType = barcode.getValueType();
+                            // Switch case for supported value types for barcodes
+                            switch (valueType) {
+                                case FirebaseVisionBarcode.TYPE_WIFI:
+                                    String ssid = barcode.getWifi().getSsid();
+                                    String password = barcode.getWifi().getPassword();
+                                    int type = barcode.getWifi().getEncryptionType();
+                                    int wifi_item = 1;
+                                    builder.append("WiFi Barcode - \n");
+                                    if (!ssid.isEmpty()) {
+                                        builder.append(wifi_item++ + ". SSID - " + ssid + "\n");
+                                    }
+                                    if (!password.isEmpty()) {
+                                        builder.append(wifi_item++ + ". Password - " + password + "\n");
+                                    }
+                                    builder.append(wifi_item++ + ". Encryption Type - " + type + "\n");
+                                    ShowDetection("Barcode Detection", builder);
+                                    break;
+                                case FirebaseVisionBarcode.TYPE_URL:
+                                    String title = barcode.getUrl().getTitle();
+                                    String url = barcode.getUrl().getUrl();
+                                    int url_item = 1;
+                                    builder.append("URL Barcode - \n");
+                                    if (title.length() != 0) {
+                                        builder.append(url_item++ + ". Title - " + title + "\n");
+                                    }
+                                    if (!url.isEmpty()) {
+                                        builder.append(url_item++ + ". URL - " + url + "\n");
+                                    }
+                                    ShowDetection("Barcode Detection", builder);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if (builder.length() == 0) {
+                            ShowDetection("Barcode Detection", builder);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Task failed with an exception
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("Apologies :(\nBarcode Detector encountered a problem!\n");
+                        ShowDetection("Barcode Detection", builder);
+                    }
+                });
     }
 }
