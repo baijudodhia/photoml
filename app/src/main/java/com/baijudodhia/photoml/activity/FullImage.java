@@ -1,5 +1,8 @@
 package com.baijudodhia.photoml.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
@@ -24,6 +28,8 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +70,7 @@ public class FullImage extends AppCompatActivity {
         }
         if (id == R.id.menu_actionbar_ocr) {
             //Call method to perform OCR
+            OCRDetection();
         }
         if (id == R.id.menu_actionbar_face) {
             //Call method to perform Face Detection
@@ -91,6 +98,17 @@ public class FullImage extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+        if (title.contentEquals("OCR Detection")) {
+            alertbuilder.setNeutralButton("COPY TEXT", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText(title, builder);
+                    clipboard.setPrimaryClip(clip);
+                    Snackbar.make(findViewById(R.id.fullimage), "Copied!", 2000).show();
+                }
+            });
+        }
         alertbuilder.show();
     }
 
@@ -138,6 +156,60 @@ public class FullImage extends AppCompatActivity {
                 });
     }
 
+
+    public void OCRDetection() {
+        final StringBuilder builder = new StringBuilder();
+        BitmapDrawable drawable = (BitmapDrawable) fullImageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
+                .getOnDeviceTextRecognizer();
+        detector.processImage(image)
+                .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                    @Override
+                    public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                        for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
+                            /* Not used since App is directly extracting the line and doesn't require the blocks for display
+                            String blockText = block.getText();
+                            Float blockConfidence = block.getConfidence();
+                            List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
+                            Point[] blockCornerPoints = block.getCornerPoints();
+                            Rect blockFrame = block.getBoundingBox();
+                            */
+                            for (FirebaseVisionText.Line line : block.getLines()) {
+                                String lineText = line.getText();
+                                builder.append(lineText + "\n");
+                                /* Not used since not required for display
+                                Float lineConfidence = line.getConfidence();
+                                List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
+                                Point[] lineCornerPoints = line.getCornerPoints();
+                                Rect lineFrame = line.getBoundingBox();
+                                */
+                                /* Not used since App is directly extracting the line and doesn't require individual element (Word/Character) for display
+                                for (FirebaseVisionText.Element element : line.getElements()) {
+                                    String elementText = element.getText();
+                                    Float elementConfidence = element.getConfidence();
+                                    List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
+                                    Point[] elementCornerPoints = element.getCornerPoints();
+                                    Rect elementFrame = element.getBoundingBox();
+                                }
+                                */
+                            }
+                        }
+                        ShowDetection("OCR Detection", builder);
+                    }
+                })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Task failed with an exception
+                                StringBuilder builder = new StringBuilder();
+                                builder.append("Apologies :(\nOCR Detector encountered a problem!\n");
+                                ShowDetection("OCR Detection", builder);
+                            }
+                        });
+    }
 
     //Face Detection
     public void FaceDetection() {
