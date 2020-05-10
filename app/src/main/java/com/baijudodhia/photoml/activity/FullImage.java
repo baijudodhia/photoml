@@ -93,7 +93,7 @@ public class FullImage extends AppCompatActivity {
         if (builder.length() != 0) {
             alertbuilder.setMessage(builder);
         } else {
-            alertbuilder.setMessage(title + " didn't find anything!");
+            alertbuilder.setMessage(title.substring(0, title.indexOf(' ')) + " detector didn't find anything!");
         }
         alertbuilder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
             @Override
@@ -135,26 +135,27 @@ public class FullImage extends AppCompatActivity {
                                 labeltext.add(text + " [" + String.format("%.2f", confidence) + " conf]");
                             }
                         }
-                        if (labels.size() != 0) {
-                            builder.append("Labels Detected\n");
-                        } else {
-                            builder.append("Labels Not Detected!");
+                        if (labeltext.size() != 0) {
+                            if (labeltext.size() == 1) {
+                                builder.append(labeltext.size() + " Label detected\n\n");
+                            } else {
+                                builder.append(labeltext.size() + " Labels detected\n\n");
+                            }
                         }
                         int i = 1;
                         for (String label : labeltext) {
                             builder.append(i + ". " + label + "\n");
                             i++;
                         }
-                        builder.append("\n");
-                        ShowDetection("Label Detecion", builder);
+                        ShowDetection("Label Detection", builder);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         StringBuilder builder = new StringBuilder();
-                        builder.append("Apologies :(\nLabel Detector encountered a problem!\n");
-                        ShowDetection("Label Detecion", builder);
+                        builder.append("Apologies :(\nLabel detector encountered a problem!\n");
+                        ShowDetection("Label Detection", builder);
                     }
                 });
     }
@@ -207,7 +208,7 @@ public class FullImage extends AppCompatActivity {
                             public void onFailure(@NonNull Exception e) {
                                 // Task failed with an exception
                                 StringBuilder builder = new StringBuilder();
-                                builder.append("Apologies :(\nOCR Detector encountered a problem!\n");
+                                builder.append("Apologies :(\nOCR detector encountered a problem!\n");
                                 ShowDetection("OCR Detection", builder);
                             }
                         });
@@ -234,9 +235,11 @@ public class FullImage extends AppCompatActivity {
                             public void onSuccess(List<FirebaseVisionFace> faces) {
                                 // Task completed successfully
                                 if (faces.size() != 0) {
-                                    builder.append("Faces Detected\n");
-                                } else {
-                                    builder.append("Faces Not Detected!");
+                                    if (faces.size() == 1) {
+                                        builder.append(faces.size() + " Face detected\n\n");
+                                    } else {
+                                        builder.append(faces.size() + " Faces detected\n\n");
+                                    }
                                 }
                                 for (FirebaseVisionFace face : faces) {
                                     int id = face.getTrackingId();
@@ -274,7 +277,7 @@ public class FullImage extends AppCompatActivity {
                             public void onFailure(@NonNull Exception e) {
                                 // Task failed with an exception
                                 StringBuilder builder = new StringBuilder();
-                                builder.append("Apologies :(\nFace Detector encountered a problem!\n");
+                                builder.append("Apologies :(\nFace detector encountered a problem!\n");
                                 ShowDetection("Face Detection", builder);
                             }
                         });
