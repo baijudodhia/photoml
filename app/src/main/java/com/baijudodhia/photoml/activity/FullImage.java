@@ -19,6 +19,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.face.FirebaseVisionFace;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 
@@ -64,6 +67,7 @@ public class FullImage extends AppCompatActivity {
         }
         if (id == R.id.menu_actionbar_face) {
             //Call method to perform Face Detection
+            FaceDetection();
         }
         if (id == R.id.menu_actionbar_barcode) {
             //Call method to perform Barcode Detection
@@ -72,14 +76,14 @@ public class FullImage extends AppCompatActivity {
     }
 
     //Show AlertDialog containing result of Firebase ML-Kit detection
-    public void showmessage(String title, StringBuilder builder) {
+    public void ShowDetection(final String title, final StringBuilder builder) {
         final AlertDialog.Builder alertbuilder = new AlertDialog.Builder(this);
         alertbuilder.setCancelable(true);
         alertbuilder.setTitle(title);
         if (builder.length() != 0) {
             alertbuilder.setMessage(builder);
         } else {
-            alertbuilder.setMessage(title + " not detected!");
+            alertbuilder.setMessage(title + " didn't find anything!");
         }
         alertbuilder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
             @Override
@@ -121,7 +125,7 @@ public class FullImage extends AppCompatActivity {
                             i++;
                         }
                         builder.append("\n");
-                        showmessage("Label Detecion", builder);
+                        ShowDetection("Label Detecion", builder);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -129,8 +133,76 @@ public class FullImage extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         StringBuilder builder = new StringBuilder();
                         builder.append("Apologies :(\nLabel Detector encountered a problem!\n");
-                        showmessage("Label Detecion", builder);
+                        ShowDetection("Label Detecion", builder);
                     }
                 });
+    }
+
+
+    //Face Detection
+    public void FaceDetection() {
+        final StringBuilder builder = new StringBuilder();
+        BitmapDrawable drawable = (BitmapDrawable) fullImageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+        FirebaseVisionFaceDetectorOptions highAccuracyOpts =
+                new FirebaseVisionFaceDetectorOptions.Builder()
+                        .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+                        .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+                        .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                        .enableTracking()
+                        .build();
+        FirebaseVisionFaceDetector detector = FirebaseVision.getInstance().getVisionFaceDetector(highAccuracyOpts);
+        detector.detectInImage(image)
+                .addOnSuccessListener(
+                        new OnSuccessListener<List<FirebaseVisionFace>>() {
+                            @Override
+                            public void onSuccess(List<FirebaseVisionFace> faces) {
+                                // Task completed successfully
+                                if (faces.size() != 0) {
+                                    builder.append("Faces Detected\n");
+                                } else {
+                                    builder.append("Faces Not Detected!");
+                                }
+                                for (FirebaseVisionFace face : faces) {
+                                    int id = face.getTrackingId();
+                                    float rotY = face.getHeadEulerAngleY(); // Head is rotated to the right rotY degrees
+                                    float rotZ = face.getHeadEulerAngleZ(); // Head is tilted sideways rotZ degrees
+                                    builder.append("1. Face Tracking ID [" + id + "]\n");
+                                    builder.append("2. Head Rotation to Right [" + rotY + "]\n");
+                                    builder.append("3. Head Tilted Sideways [" + rotZ + "]\n");
+                                    if (face.getSmilingProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
+                                        if (face.getSmilingProbability() > 0) {
+                                            float SmilingProbability = face.getSmilingProbability();
+                                            builder.append("4. Smiling Probability [" + SmilingProbability + "]\n");
+                                        }
+                                    }
+                                    if (face.getLeftEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
+                                        if (face.getLeftEyeOpenProbability() > 0) {
+                                            float LeftEyeOpenProbability = face.getLeftEyeOpenProbability();
+                                            builder.append("5. Left Eye Open Probability [" + LeftEyeOpenProbability + "]\n");
+                                        }
+                                    }
+                                    if (face.getRightEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
+                                        if (face.getRightEyeOpenProbability() > 0) {
+                                            float RightEyeOpenProbability = face.getRightEyeOpenProbability();
+                                            builder.append("6. Right Eye Open Probability [" + RightEyeOpenProbability + "]\n");
+                                        }
+                                    }
+                                    builder.append("\n");
+                                }
+                                ShowDetection("Face Detection", builder);
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Task failed with an exception
+                                StringBuilder builder = new StringBuilder();
+                                builder.append("Apologies :(\nFace Detector encountered a problem!\n");
+                                ShowDetection("Face Detection", builder);
+                            }
+                        });
     }
 }
