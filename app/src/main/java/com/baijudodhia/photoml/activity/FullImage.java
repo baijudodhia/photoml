@@ -98,7 +98,7 @@ public class FullImage extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-        if (title.contentEquals("OCR Detection")) {
+        if (title.contentEquals("OCR Detection") && builder.length() != 0) {
             alertbuilder.setNeutralButton("COPY TEXT", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
