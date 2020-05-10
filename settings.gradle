@@ -1,2 +1,2 @@
-rootProject.name='PhotoML'
+rootProject.name = 'PhotoML'
 include ':app'
