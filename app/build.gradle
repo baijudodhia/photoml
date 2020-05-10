@@ -49,7 +49,7 @@ dependencies {
     //PhotoView Dependency for auto image zooming and double tap and pinch zoom replacing ImageView
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
-    //Firebase ML-Kit general dependency, also used for OCR
+    //Firebase ML-Kit general dependency, also used for OCR and Barcode
     implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
 
     //Firebase ML-Kit recongnize and label images dependency works along with general dependency
@@ -57,4 +57,8 @@ dependencies {
 
     //Firebase ML-Kit face detection dependency works along with general dependency
     implementation 'com.google.firebase:firebase-ml-vision-face-model:20.0.1'
+
+    //Firebase ML-Kit general dependency is currently used for Barcode
+    //Firebase ML-Kit barcode detection dependency works along with general dependency [NOT WORKING]
+    //implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.0.1'
 }
