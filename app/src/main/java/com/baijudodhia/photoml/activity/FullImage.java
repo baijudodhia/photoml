@@ -66,21 +66,10 @@ public class FullImage extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menu_actionbar_label) {
-            //Call method to perform Label Detection
-            LabelDetection();
-        }
-        if (id == R.id.menu_actionbar_ocr) {
-            //Call method to perform OCR
-            OCRDetection();
-        }
-        if (id == R.id.menu_actionbar_face) {
-            //Call method to perform Face Detection
-            FaceDetection();
-        }
-        if (id == R.id.menu_actionbar_barcode) {
-            //Call method to perform Barcode Detection
-            BarcodeDetection();
+        if (id == R.id.menu_actionbar_tab) {
+            Intent intent = new Intent(this, ImageScan.class);
+            intent.putExtra("imagePath", imagePath);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

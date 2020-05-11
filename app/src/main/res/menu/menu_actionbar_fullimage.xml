@@ -2,23 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_actionbar_label"
-        android:orderInCategory="1"
-        android:title="Label"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_actionbar_ocr"
-        android:orderInCategory="2"
-        android:title="OCR"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_actionbar_face"
-        android:orderInCategory="3"
-        android:title="Face"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_actionbar_barcode"
-        android:orderInCategory="4"
-        android:title="Barcode"
-        app:showAsAction="always" />
+        android:id="@+id/menu_actionbar_tab"
+        android:orderInCategory="0"
+        android:title="ML"
+        app:showAsAction="ifRoom" />
 </menu>
