@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -49,9 +50,12 @@ public class ImageScan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagescan);
+
         getSupportActionBar().setTitle(null);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
         imagePath = intent.getExtras().getString("imagePath");
         textView = findViewById(R.id.result);
@@ -60,31 +64,39 @@ public class ImageScan extends AppCompatActivity {
         ocr = findViewById(R.id.btn_ocr);
         face = findViewById(R.id.btn_face);
         barcode = findViewById(R.id.btn_barcode);
-        float screenRatio = deviceWidth / deviceHeight;
-        float photoViewHeight = deviceWidth * screenRatio;
-        photoView.getLayoutParams().height = (int) photoViewHeight;
-        photoView.requestLayout();
+
+        if (deviceHeight > deviceWidth) {
+            float screenRatio = deviceWidth / deviceHeight;
+            float photoViewHeight = deviceWidth * screenRatio;
+            photoView.getLayoutParams().height = (int) photoViewHeight;
+            photoView.requestLayout();
+        }
+
         Glide.with(this)
                 .load(imagePath)
                 .into(photoView);
+
         label.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 LabelDetection();
             }
         });
+
         ocr.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 OCRDetection();
             }
         });
+
         face.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 FaceDetection();
             }
         });
+
         barcode.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button

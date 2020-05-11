@@ -23,7 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ImageGallery" />
+        <activity
+            android:name=".activity.ImageGallery"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".activity.FullImage"
             android:parentActivityName=".activity.FullImage"
