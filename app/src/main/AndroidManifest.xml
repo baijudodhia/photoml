@@ -28,6 +28,10 @@
             android:name=".activity.FullImage"
             android:parentActivityName=".activity.ImageGallery"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
+        <activity
+            android:name=".activity.ImageScan"
+            android:parentActivityName=".activity.ImageScan"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
     </application>
 
 </manifest>
