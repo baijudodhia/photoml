@@ -31,6 +31,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -61,4 +62,5 @@ dependencies {
     //Firebase ML-Kit general dependency is currently used for Barcode
     //Firebase ML-Kit barcode detection dependency works along with general dependency [NOT WORKING]
     //implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.0.1'
+
 }
