@@ -1,9 +1,12 @@
 package com.baijudodhia.photoml.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.view.View;
 
@@ -27,7 +30,7 @@ public class ImageGallery extends AppCompatActivity {
         setContentView(R.layout.activity_imagegallery);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000\">Photos</font>"));
-        imagesList = getIntent().getStringArrayListExtra("imagesList");
+        imagesList = FetchExternalStorageImageMedia(this);
         RecyclerView recyclerView = findViewById(R.id.Activity_RecyclerViewPhotoGallery);
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         imageGalleryAdapter = new ImageGalleryAdapter(this, imagesList);
@@ -41,5 +44,25 @@ public class ImageGallery extends AppCompatActivity {
                 startActivity(fullimage);
             }
         });
+    }
+
+    public ArrayList<String> FetchExternalStorageImageMedia(Activity context) {
+        ArrayList<String> externalStorageImageUri = new ArrayList<String>();
+        Cursor mCursor = getContentResolver()
+                .query(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        MediaStore.Images.Media.DATE_TAKEN + " DESC");
+        mCursor.moveToFirst();
+        while (!mCursor.isAfterLast()) {
+            String data = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            System.out.println(data + "\n");
+            externalStorageImageUri.add(data);
+            mCursor.moveToNext();
+        }
+        mCursor.close();
+        return externalStorageImageUri;
     }
 }

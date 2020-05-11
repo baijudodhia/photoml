@@ -26,7 +26,7 @@
         <activity android:name=".activity.ImageGallery" />
         <activity
             android:name=".activity.FullImage"
-            android:parentActivityName=".activity.ImageGallery"
+            android:parentActivityName=".activity.FullImage"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
             android:name=".activity.ImageScan"
