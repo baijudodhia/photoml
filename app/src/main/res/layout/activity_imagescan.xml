@@ -25,8 +25,7 @@
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="@color/whitesmoke">
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,6 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:text="Label" />
 
             <Button
@@ -46,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:text="OCR" />
 
             <Button
@@ -53,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:text="Face" />
 
             <Button
@@ -60,6 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:text="Barcode" />
         </LinearLayout>
     </HorizontalScrollView>
