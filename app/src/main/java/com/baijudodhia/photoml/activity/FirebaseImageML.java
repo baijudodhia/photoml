@@ -108,31 +108,39 @@ public class FirebaseImageML extends AppCompatActivity {
     }
 
     //Show result of Firebase ML-Kit detection in TextView
-    public void ShowDetection(final String title, final StringBuilder builder) {
-        mTextView.setText(null);
-        mTextView.setMovementMethod(new ScrollingMovementMethod());
-        if (builder.length() != 0) {
-            mTextView.append(builder);
-        } else {
-            mTextView.append(title.substring(0, title.indexOf(' ')) + " detector didn't find anything!");
-        }
-        if (builder.length() != 0) {
-            mTextView.append("\n(hold the text to copy it!)");
-            mTextView.setOnLongClickListener(new View.OnLongClickListener() {
-                public boolean onLongClick(View view) {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText(title, builder);
-                    clipboard.setPrimaryClip(clip);
-                    Snackbar.make(findViewById(R.id.mtv_firebaseimageml_results), "Copied!", 500).show();
-                    return true;
+    public void ShowDetection(final String title, final StringBuilder builder, boolean success) {
+        if (success == true) {
+            mTextView.setText(null);
+            mTextView.setMovementMethod(new ScrollingMovementMethod());
+            if (builder.length() != 0) {
+                mTextView.append(builder);
+                if (title.substring(0, title.indexOf(' ')).equalsIgnoreCase("OCR")) {
+                    mTextView.append("\n(hold the text to copy it!)");
+                } else {
+                    mTextView.append("(hold the text to copy it!)");
                 }
-            });
+                mTextView.setOnLongClickListener(new View.OnLongClickListener() {
+                    public boolean onLongClick(View view) {
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText(title, builder);
+                        clipboard.setPrimaryClip(clip);
+                        Snackbar.make(findViewById(R.id.mtv_firebaseimageml_results), "Copied!", 500).show();
+                        return true;
+                    }
+                });
+            } else {
+                mTextView.append(title.substring(0, title.indexOf(' ')) + " detector didn't find anything!");
+            }
+        } else if (success == false) {
+            mTextView.setText(null);
+            mTextView.setMovementMethod(new ScrollingMovementMethod());
+            mTextView.append(builder);
         }
     }
 
     //Label Detection
     public void LabelDetection() {
-        mTextView.setText("label loading...");
+        mTextView.setText("Label detector loading...");
         final StringBuilder builder = new StringBuilder();
         final ArrayList<String> labeltext = new ArrayList<>();
         BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
@@ -143,27 +151,25 @@ public class FirebaseImageML extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
                     @Override
                     public void onSuccess(List<FirebaseVisionImageLabel> labels) {
+                        // Task completed successfully
+                        if (labels.size() != 0) {
+                            if (labels.size() == 1) {
+                                builder.append(labels.size() + " Label detected\n\n");
+                            } else if (labels.size() > 1) {
+                                builder.append(labels.size() + " Labels detected\n\n");
+                            }
+                        }
+                        int label_count = 1;
                         for (FirebaseVisionImageLabel label : labels) {
                             String text = label.getText();
                             float confidence = label.getConfidence();
                             //Only add labels with confidence greater than 0.5
                             if (confidence > 0) {
-                                labeltext.add(text + " [" + String.format("%.2f", confidence) + " conf]");
+                                builder.append(label_count++ + ". " + text + " [" + String.format("%.2f", confidence) + " conf]\n");
                             }
                         }
-                        if (labeltext.size() != 0) {
-                            if (labeltext.size() == 1) {
-                                builder.append(labeltext.size() + " Label detected\n\n");
-                            } else {
-                                builder.append(labeltext.size() + " Labels detected\n\n");
-                            }
-                        }
-                        int i = 1;
-                        for (String label : labeltext) {
-                            builder.append(i + ". " + label + "\n");
-                            i++;
-                        }
-                        ShowDetection("Label Detection", builder);
+                        builder.append("\n");
+                        ShowDetection("Label Detection", builder, true);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -171,13 +177,13 @@ public class FirebaseImageML extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         StringBuilder builder = new StringBuilder();
                         builder.append("Apologies :(\nLabel detector encountered a problem!\n");
-                        ShowDetection("Label Detection", builder);
+                        ShowDetection("Label Detection", builder, false);
                     }
                 });
     }
 
     public void OCRDetection() {
-        mTextView.setText("ocr loading...");
+        mTextView.setText("OCR detector loading...");
         final StringBuilder builder = new StringBuilder();
         BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
@@ -188,6 +194,7 @@ public class FirebaseImageML extends AppCompatActivity {
                     @Override
                     public void onSuccess(FirebaseVisionText firebaseVisionText) {
                         for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
+                            // Task completed successfully
                             /* Not used since App is directly extracting the line and doesn't require the blocks for display
                             String blockText = block.getText();
                             Float blockConfidence = block.getConfidence();
@@ -215,7 +222,7 @@ public class FirebaseImageML extends AppCompatActivity {
                                 */
                             }
                         }
-                        ShowDetection("OCR Detection", builder);
+                        ShowDetection("OCR Detection", builder, true);
                     }
                 })
                 .addOnFailureListener(
@@ -224,15 +231,15 @@ public class FirebaseImageML extends AppCompatActivity {
                             public void onFailure(@NonNull Exception e) {
                                 // Task failed with an exception
                                 StringBuilder builder = new StringBuilder();
-                                builder.append("Apologies :(\nOCR detector encountered a problem!\n");
-                                ShowDetection("OCR Detection", builder);
+                                builder.append("Apologies :(\nOCR detector encountered a problem!\n\n");
+                                ShowDetection("OCR Detection", builder, false);
                             }
                         });
     }
 
     //Face Detection
     public void FaceDetection() {
-        mTextView.setText("face loading...");
+        mTextView.setText("Face detector loading...");
         final StringBuilder builder = new StringBuilder();
         BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
@@ -254,40 +261,38 @@ public class FirebaseImageML extends AppCompatActivity {
                         if (faces.size() != 0) {
                             if (faces.size() == 1) {
                                 builder.append(faces.size() + " Face detected\n\n");
-                            } else {
+                            } else if (faces.size() > 1) {
                                 builder.append(faces.size() + " Faces detected\n\n");
                             }
-                        } else {
-                            builder.append("No faces detected!");
                         }
                         for (FirebaseVisionFace face : faces) {
                             int id = face.getTrackingId();
                             float rotY = face.getHeadEulerAngleY(); // Head is rotated to the right rotY degrees
                             float rotZ = face.getHeadEulerAngleZ(); // Head is tilted sideways rotZ degrees
                             builder.append("1. Face Tracking ID [" + id + "]\n");
-                            builder.append("2. Head Rotation to Right [" + rotY + "]\n");
-                            builder.append("3. Head Tilted Sideways [" + rotZ + "]\n");
+                            builder.append("2. Head Rotation to Right [" + String.format("%.2f", rotY) + " °]\n");
+                            builder.append("3. Head Tilted Sideways [" + String.format("%.2f", rotZ) + " °]\n");
                             if (face.getSmilingProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
                                 if (face.getSmilingProbability() > 0) {
                                     float SmilingProbability = face.getSmilingProbability();
-                                    builder.append("4. Smiling Probability [" + SmilingProbability + "]\n");
+                                    builder.append("4. Smiling Probability [" + String.format("%.2f", SmilingProbability) + "]\n");
                                 }
                             }
                             if (face.getLeftEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
                                 if (face.getLeftEyeOpenProbability() > 0) {
                                     float LeftEyeOpenProbability = face.getLeftEyeOpenProbability();
-                                    builder.append("5. Left Eye Open Probability [" + LeftEyeOpenProbability + "]\n");
+                                    builder.append("5. Left Eye Open Probability [" + String.format("%.2f", LeftEyeOpenProbability) + "]\n");
                                 }
                             }
                             if (face.getRightEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
                                 if (face.getRightEyeOpenProbability() > 0) {
                                     float RightEyeOpenProbability = face.getRightEyeOpenProbability();
-                                    builder.append("6. Right Eye Open Probability [" + RightEyeOpenProbability + "]\n");
+                                    builder.append("6. Right Eye Open Probability [" + String.format("%.2f", RightEyeOpenProbability) + "]\n");
                                 }
                             }
                             builder.append("\n");
                         }
-                        ShowDetection("Face Detection", builder);
+                        ShowDetection("Face Detection", builder, true);
                     }
                 });
         result.addOnFailureListener(
@@ -297,14 +302,14 @@ public class FirebaseImageML extends AppCompatActivity {
                         // Task failed with an exception
                         StringBuilder builder = new StringBuilder();
                         builder.append("Apologies :(\nFace detector encountered a problem!\n");
-                        ShowDetection("Face Detection", builder);
+                        ShowDetection("Face Detection", builder, false);
                     }
                 });
     }
 
     //Barcode Detection
     public void BarcodeDetection() {
-        mTextView.setText("barcode loading...");
+        mTextView.setText("Barcode detector loading...");
         final StringBuilder builder = new StringBuilder();
         BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
@@ -315,6 +320,13 @@ public class FirebaseImageML extends AppCompatActivity {
             @Override
             public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
                 // Task completed successfully
+                if (barcodes.size() != 0) {
+                    if (barcodes.size() == 1) {
+                        builder.append(barcodes.size() + " Barcode Detected - \n\n");
+                    } else if (barcodes.size() > 1) {
+                        builder.append(barcodes.size() + " Barcodes Detected - \n\n");
+                    }
+                }
                 for (FirebaseVisionBarcode barcode : barcodes) {
                             /* Not used for display
                             Rect bounds = barcode.getBoundingBox();
@@ -323,20 +335,21 @@ public class FirebaseImageML extends AppCompatActivity {
                             */
                     // IMPORTANT - Can't print multiple barcodes at same time, only print the last barcode retireved from list barcodes
                     int valueType = barcode.getValueType();
-                    System.out.println("VALUE - " + valueType + "\n");
                     // Switch case for supported value types for barcodes
                     switch (valueType) {
                         case FirebaseVisionBarcode.TYPE_UNKNOWN: //0
                             builder.append("Unknown Barcode :(\n");
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_CONTACT_INFO: //1
                             String titleContact = barcode.getContactInfo().getTitle();
-                            String personName = barcode.getContactInfo().getName().toString();
-                            String phones = barcode.getContactInfo().getPhones().toString();
-                            String emails = barcode.getContactInfo().getEmails().toString();
-                            String addresses = barcode.getContactInfo().getAddresses().toString();
+                            String personName = barcode.getContactInfo().getName().getFormattedName();
+                            List<FirebaseVisionBarcode.Phone> phoneContacts = barcode.getContactInfo().getPhones();
+                            List<FirebaseVisionBarcode.Email> emailContacts = barcode.getContactInfo().getEmails();
+                            List<FirebaseVisionBarcode.Address> addresses = barcode.getContactInfo().getAddresses();
                             String organizations = barcode.getContactInfo().getOrganization();
-                            String urls = barcode.getContactInfo().getUrls().toString();
+                            String[] urls = barcode.getContactInfo().getUrls();
                             int contact = 1;
                             builder.append("Contact Barcode -\n");
                             if (!titleContact.isEmpty()) {
@@ -345,22 +358,101 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!personName.isEmpty()) {
                                 builder.append(contact++ + ". Person Name - " + personName + "\n");
                             }
-                            if (!phones.isEmpty()) {
-                                builder.append(contact++ + ". Phone - " + phones + "\n");
+                            if (!phoneContacts.isEmpty()) {
+                                if (phoneContacts.size() == 1) {
+                                    builder.append(contact++ + ". Phone - \n");
+                                } else if (phoneContacts.size() > 1) {
+                                    builder.append(contact++ + ". Phones - \n");
+                                }
+                                for (int phoneno = 0; phoneno < phoneContacts.size(); phoneno++) {
+                                    builder.append("Phone Sr. No. " + (phoneno + 1) + "\n");
+                                    if (phoneContacts.get(phoneno).getType() == 0) {
+                                        builder.append("Phone Type - Unknown\n");
+                                    } else if (phoneContacts.get(phoneno).getType() == 1) {
+                                        builder.append("Phone Type - Work\n");
+                                    } else if (phoneContacts.get(phoneno).getType() == 2) {
+                                        builder.append("Phone Type - Home\n");
+                                    } else if (phoneContacts.get(phoneno).getType() == 3) {
+                                        builder.append("Phone Type - Fax\n");
+                                    } else if (phoneContacts.get(phoneno).getType() == 4) {
+                                        builder.append("Phone Type - Mobile\n");
+                                    } else {
+                                        builder.append("Phone Type - Unknown\n");
+                                    }
+                                    if (phoneContacts.get(phoneno).getNumber() != null) {
+                                        builder.append("Phone Number - " + phoneContacts.get(phoneno).getNumber() + "\n");
+                                    }
+                                }
                             }
-                            if (!emails.isEmpty()) {
-                                builder.append(contact++ + ". Emails - " + emails + "\n");
+                            if (!emailContacts.isEmpty()) {
+                                if (emailContacts.size() == 1) {
+                                    builder.append(contact++ + ". Email - \n");
+                                } else if (emailContacts.size() > 1) {
+                                    builder.append(contact++ + ". Emails - \n");
+                                }
+                                for (int emailno = 0; emailno < emailContacts.size(); emailno++) {
+                                    builder.append("Email Sr. No. " + (emailno + 1) + "\n");
+                                    if (emailContacts.get(emailno).getType() == 0) {
+                                        builder.append("Email Type - Unknown\n");
+                                    } else if (emailContacts.get(emailno).getType() == 1) {
+                                        builder.append("Email Type - Work\n");
+                                    } else if (emailContacts.get(emailno).getType() == 2) {
+                                        builder.append("Email Type - Home\n");
+                                    } else {
+                                        builder.append("Email Type - Unknown\n");
+                                    }
+                                    if (!(emailContacts.get(emailno).getAddress().isEmpty())) {
+                                        builder.append("Email Address - " + emailContacts.get(emailno).getAddress() + "\n");
+                                    }
+                                    if (!(emailContacts.get(emailno).getSubject().isEmpty())) {
+                                        builder.append("Email Subject - " + emailContacts.get(emailno).getSubject() + "\n");
+                                    }
+                                    if (!(emailContacts.get(emailno).getBody().isEmpty())) {
+                                        builder.append("Email Body - " + emailContacts.get(emailno).getBody() + "\n");
+                                    }
+                                }
                             }
                             if (!addresses.isEmpty()) {
-                                builder.append(contact++ + ". Address - " + addresses + "\n");
+                                if (addresses.size() == 1) {
+                                    builder.append(contact++ + ". Address - \n");
+                                } else if (phoneContacts.size() > 1) {
+                                    builder.append(contact++ + ". Addresses - \n");
+                                }
+                                for (int addressno = 0; addressno < addresses.size(); addressno++) {
+                                    builder.append("Address Sr. No. " + (addressno + 1) + "\n");
+                                    if (emailContacts.get(addressno).getType() == 0) {
+                                        builder.append("Address Type - Unknown\n");
+                                    } else if (emailContacts.get(addressno).getType() == 1) {
+                                        builder.append("Address Type - Work\n");
+                                    } else if (emailContacts.get(addressno).getType() == 2) {
+                                        builder.append("Address Type - Home\n");
+                                    } else {
+                                        builder.append("Address Type - Unknown\n");
+                                    }
+                                    if (!(addresses.get(addressno).getAddressLines().length < 1)) {
+                                        for (int addresslines = 0; addresslines < addresses.get(addressno).getAddressLines().length; addresslines++) {
+                                            builder.append("Address Line " + (addresslines + 1) + " - ");
+                                            builder.append(addresses.get(addressno).getAddressLines()[addresslines] + "\n");
+                                        }
+                                    }
+                                }
                             }
                             if (!organizations.isEmpty()) {
                                 builder.append(contact++ + ". Organization - " + organizations + "\n");
                             }
-                            if (!urls.isEmpty()) {
-                                builder.append(contact++ + ". URLS - " + urls + "\n");
+                            if (!(urls.length < 1)) {
+                                if (urls.length == 1) {
+                                    builder.append(contact++ + ". URL - \n");
+                                } else if (urls.length > 1) {
+                                    builder.append(contact++ + ". URLs - \n");
+                                }
+                                for (int urllength = 0; urllength < urls.length; urllength++) {
+                                    builder.append("URL " + (urllength + 1) + " - ");
+                                    builder.append(urls[urllength] + "\n");
+                                }
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_EMAIL: //2
                             int emailtype = barcode.getEmail().getType();
@@ -389,11 +481,13 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!(emailbody.isEmpty())) {
                                 builder.append(email_item++ + ". Body - " + emailbody + "\n");
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_ISBN: //3
                             builder.append("ISBN Barcode -\nno data available\n");
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_PHONE: //4
                             int phonetype = barcode.getPhone().getType();
@@ -418,11 +512,13 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!(phonenumber.isEmpty())) {
                                 builder.append(phonenumber_item++ + ". Number - " + phonenumber + "\n");
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_PRODUCT: //5
                             builder.append("Product Barcode -\nno data available\n");
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_SMS: //6
                             String smsnumber = barcode.getSms().getPhoneNumber();
@@ -435,11 +531,13 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!(smsmessage.isEmpty())) {
                                 builder.append(sms_item++ + ". Message- " + smsmessage + "\n");
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_TEXT: //7
                             builder.append("Text Barcode -\nno data available\n");
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_URL: //8
                             String title = barcode.getUrl().getTitle();
@@ -452,7 +550,8 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!url.isEmpty()) {
                                 builder.append(url_item++ + ". URL - " + url + "\n");
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_WIFI: //9
                             String wifissid = barcode.getWifi().getSsid();
@@ -477,7 +576,8 @@ public class FirebaseImageML extends AppCompatActivity {
                                     builder.append(wifi_item++ + ". Encryption Type - Unknown\n");
                                 }
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_GEO: //10
                             double geolat = barcode.getGeoPoint().getLat();
@@ -490,7 +590,8 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!(Double.toString(geolng).isEmpty())) {
                                 builder.append(geo_item++ + ". Longitude - " + geolng + "\n");
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_CALENDAR_EVENT: //11
                             String summary = barcode.getCalendarEvent().getSummary();
@@ -527,7 +628,8 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!status.isEmpty()) {
                                 builder.append(calendar_item++ + ". Status - " + status + "\n");
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                             break;
                         case FirebaseVisionBarcode.TYPE_DRIVER_LICENSE: //12
                             String dlfirstname = barcode.getDriverLicense().getFirstName();
@@ -588,14 +690,13 @@ public class FirebaseImageML extends AppCompatActivity {
                             if (!(dldocumenttype.isEmpty())) {
                                 builder.append(dl_item++ + ". Document Type - " + dldocumenttype + "\n");
                             }
-                            ShowDetection("Barcode Detection", builder);
+                            builder.append("\n");
+                            ShowDetection("Barcode Detection", builder, true);
                         default:
                             break;
                     }
                 }
-                if (builder.length() == 0) {
-                    ShowDetection("Barcode Detection", builder);
-                }
+                ShowDetection("Barcode Detection", builder, true);
             }
         });
         result.addOnFailureListener(new OnFailureListener() {
@@ -603,8 +704,8 @@ public class FirebaseImageML extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 // Task failed with an exception
                 StringBuilder builder = new StringBuilder();
-                builder.append("Apologies :(\nBarcode Detector encountered a problem!\n");
-                ShowDetection("Barcode Detection", builder);
+                builder.append("Apologies :(\nBarcode Detector encountered a problem!\n\n");
+                ShowDetection("Barcode Detection", builder, false);
             }
         });
     }
