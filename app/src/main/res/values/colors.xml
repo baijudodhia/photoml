@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#0A0A24</color>
     <color name="colorAccent">@color/cardview_light_background</color>
     <color name="whitesmoke">#F5F5F5</color>
+    <color name="defaultLinkColor">#0000EE</color>
 </resources>
