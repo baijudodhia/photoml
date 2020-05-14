@@ -134,7 +134,7 @@ public class FirebaseImageML extends AppCompatActivity {
     public void LabelDetection() {
         mTextView.setText("label loading...");
         final StringBuilder builder = new StringBuilder();
-        final ArrayList<String> labeltext = new ArrayList<String>();
+        final ArrayList<String> labeltext = new ArrayList<>();
         BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);

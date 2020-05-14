@@ -1,6 +1,5 @@
 package com.baijudodhia.photoml.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -9,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -58,8 +56,8 @@ public class ImageGallery extends AppCompatActivity {
         });
     }
 
-    public ArrayList<String> FetchExternalStorageImageMedia(Activity context) {
-        ArrayList<String> externalStorageImageUri = new ArrayList<String>();
+    public ArrayList<String> FetchExternalStorageImageMedia() {
+        ArrayList<String> externalStorageImageUri = new ArrayList<>();
         Cursor mCursor = getContentResolver()
                 .query(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -78,7 +76,7 @@ public class ImageGallery extends AppCompatActivity {
     }
 
     public void SetLayout() {
-        arrls_ImagePath = FetchExternalStorageImageMedia(this);
+        arrls_ImagePath = FetchExternalStorageImageMedia();
         imageGalleryAdapter = new ImageGalleryAdapter(this, arrls_ImagePath);
 
         recyclerView = findViewById(R.id.rv_imagegallery);
@@ -88,7 +86,7 @@ public class ImageGallery extends AppCompatActivity {
 
         imageGalleryAdapter.setClickListener(new ImageGalleryAdapter.ItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(int position) {
                 Intent intent = new Intent(ImageGallery.this, FullImage.class);
                 intent.putExtra("s_ImagePath", arrls_ImagePath.get(position));
                 startActivity(intent);
