@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_actionbar_firebaseimageml"
-        android:contentDescription="Firebase Image ML"
+        android:contentDescription="@string/menu_activity_actionbar_fullimage_item_firebaseimageml_contentdescription"
         android:icon="@mipmap/firebasemlkit_foreground"
         android:orderInCategory="0"
-        android:title="Firebase Image ML"
+        android:title="@string/menu_activity_actionbar_fullimage_item_firebaseimageml_text"
         app:showAsAction="ifRoom" />
 </menu>

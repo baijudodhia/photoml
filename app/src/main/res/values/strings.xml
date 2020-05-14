@@ -1,3 +1,37 @@
 <resources>
+    <!-- Common -->
     <string name="app_name">PhotoML</string>
+
+    <!-- Activity ImageGallery -->
+    <string name="layout_activity_imagegallery_mtv_contentdescription">Information for Swipe Down to Refresh the Gallery</string>
+    <string name="layout_activity_imagegallery_mtv_text">Swipe down to retrieve new photos from device</string>
+
+    <!-- Activity FullImage -->
+    <string name="layout_activity_fullimage_pv_contentdescription">Full Photo View</string>
+    <string name="menu_activity_actionbar_fullimage_item_firebaseimageml_contentdescription">Firebase Image ML</string>
+    <string name="menu_activity_actionbar_fullimage_item_firebaseimageml_text">Firebase Image ML</string>
+
+    <!-- Activity FirebaseImageML -->
+    <string name="layout_activity_firebaseimageml_pv_contentdescription">Photo</string>
+    <string name="layout_activity_firebaseimageml_mtv_results_contentdescription">Firebase ML-Kit Detection Results</string>
+    <string name="layout_activity_firebaseimageml_mtv_results_text">press any button to begin detection…</string>
+    <string name="layout_activity_firebaseimageml_mbtn_label_contentdescription">Label Detection using Firebase ML-Kit</string>
+    <string name="layout_activity_firebaseimageml_mbtn_ocr_contentdescription">Text Recognition using Firebase ML-Kit</string>
+    <string name="layout_activity_firebaseimageml_mbtn_face_contentdescription">Face Detection using Firebase ML-Kit</string>
+    <string name="layout_activity_firebaseimageml_mbtn_barcode_contentdescription">Barcode Detection using Firebase ML-Kit</string>
+    <string name="layout_activity_firebaseimageml_mbtn_label_text">Label</string>
+    <string name="layout_activity_firebaseimageml_mbtn_ocr_text">OCR</string>
+    <string name="layout_activity_firebaseimageml_mbtn_face_text">Face</string>
+    <string name="layout_activity_firebaseimageml_mbtn_barcode_text">Barcode</string>
+    <string name="layoutland_activity_firebaseimageml_pv_contentdescription">Photo</string>
+    <string name="layoutland_activity_firebaseimageml_mtv_results_contentdescription">Firebase ML-Kit Detection Results</string>
+    <string name="layoutland_activity_firebaseimageml_mtv_results_text">press any button to begin detection…</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_label_contentdescription">Label Detection using Firebase ML-Kit</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_face_contentdescription">Face Detection using Firebase ML-Kit</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_ocr_contentdescription">Text Recognition using Firebase ML-Kit</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_barcode_contentdescription">Barcode Detection using Firebase ML-Kit</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_barcode_text">Barcode</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_face_text">Face</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_ocr_text">OCR</string>
+    <string name="layoutland_activity_firebaseimageml_mbtn_label_text">Label</string>
 </resources>

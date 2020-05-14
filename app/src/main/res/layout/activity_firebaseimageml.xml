@@ -10,24 +10,22 @@
         android:id="@+id/pv_firebaseimageml"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="Photo" />
+        android:contentDescription="@string/layout_activity_firebaseimageml_pv_contentdescription" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtv_firebaseimageml_results"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:autoLink="all|web|map|email"
         android:background="@color/whitesmoke"
-        android:contentDescription="Firebase ML-Kit Detection Results"
+        android:contentDescription="@string/layout_activity_firebaseimageml_mtv_results_contentdescription"
         android:isScrollContainer="true"
         android:padding="10dp"
         android:scrollbars="vertical"
-        android:text="press any button to begin detection..."
+        android:text="@string/layout_activity_firebaseimageml_mtv_results_text"
         android:textColorLink="@color/defaultLinkColor"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
@@ -35,7 +33,7 @@
         android:layout_gravity="center">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
@@ -46,8 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:contentDescription="Label Detection using Firebase ML-Kit"
-                android:text="Label"
+                android:contentDescription="@string/layout_activity_firebaseimageml_mbtn_label_contentdescription"
+                android:text="@string/layout_activity_firebaseimageml_mbtn_label_text"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
@@ -60,8 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:contentDescription="Text Recognition using Firebase ML-Kit"
-                android:text="OCR"
+                android:contentDescription="@string/layout_activity_firebaseimageml_mbtn_ocr_contentdescription"
+                android:text="@string/layout_activity_firebaseimageml_mbtn_ocr_text"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
@@ -74,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:contentDescription="Face Detection using Firebase ML-Kit"
-                android:text="Face"
+                android:contentDescription="@string/layout_activity_firebaseimageml_mbtn_face_contentdescription"
+                android:text="@string/layout_activity_firebaseimageml_mbtn_face_text"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
@@ -88,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:contentDescription="Barcode Detection using Firebase ML-Kit"
-                android:text="Barcode"
+                android:contentDescription="@string/layout_activity_firebaseimageml_mbtn_barcode_contentdescription"
+                android:text="@string/layout_activity_firebaseimageml_mbtn_barcode_text"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

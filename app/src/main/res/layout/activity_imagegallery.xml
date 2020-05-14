@@ -8,8 +8,8 @@
         android:id="@+id/mtv_imagegallery_srlinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="Information for Swipe Down to Refresh the Gallery"
-        android:text="Swipe down to retrieve new photos from device"
+        android:contentDescription="@string/layout_activity_imagegallery_mtv_contentdescription"
+        android:text="@string/layout_activity_imagegallery_mtv_text"
         android:textAlignment="center" />
     <!-- Pull down to swipe -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

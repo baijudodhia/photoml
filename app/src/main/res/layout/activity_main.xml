@@ -11,6 +11,7 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:src="@mipmap/ic_launcher_foreground" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -18,5 +19,5 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 </LinearLayout>

@@ -11,6 +11,6 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:contentDescription="Full Photo View"
+        android:contentDescription="@string/layout_activity_fullimage_pv_contentdescription"
         android:src="@color/colorPrimaryDark" />
 </RelativeLayout>
