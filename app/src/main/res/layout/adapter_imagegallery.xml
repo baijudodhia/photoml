@@ -5,11 +5,10 @@
     android:orientation="horizontal"
     android:padding="0.1dp">
 
-    <ImageView
-        android:id="@+id/Adapter_ImageViewItem"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_adapter_imagegallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:scaleType="centerCrop" />
-
 </RelativeLayout>

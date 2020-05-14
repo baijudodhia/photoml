@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FullImage extends AppCompatActivity {
-    String imagePath;
-    PhotoView fullImageView;
+    String s_ImagePath;
+    PhotoView pv_FullPhotoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,12 @@ public class FullImage extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
-        fullImageView = findViewById(R.id.fullimage);
-        imagePath = i.getExtras().getString("imagePath");
+        pv_FullPhotoView = findViewById(R.id.pv_fullimage);
+        s_ImagePath = i.getExtras().getString("s_ImagePath");
+        System.out.println(s_ImagePath);
         Glide.with(this)
-                .load(imagePath)
-                .into(fullImageView);
+                .load(s_ImagePath)
+                .into(pv_FullPhotoView);
     }
 
     // create an action bar button
@@ -72,7 +73,7 @@ public class FullImage extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.menu_actionbar_firebaseimageml) {
             Intent intent = new Intent(this, FirebaseImageML.class);
-            intent.putExtra("imagePath", imagePath);
+            intent.putExtra("s_ImagePath", s_ImagePath);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -101,7 +102,7 @@ public class FullImage extends AppCompatActivity {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText(title, builder);
                     clipboard.setPrimaryClip(clip);
-                    Snackbar.make(findViewById(R.id.fullimage), "Copied!", 2000).show();
+                    Snackbar.make(findViewById(R.id.pv_fullimage), "Copied!", 2000).show();
                 }
             });
         }
@@ -112,7 +113,7 @@ public class FullImage extends AppCompatActivity {
     public void LabelDetection() {
         final StringBuilder builder = new StringBuilder();
         final ArrayList<String> labeltext = new ArrayList<String>();
-        BitmapDrawable drawable = (BitmapDrawable) fullImageView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_FullPhotoView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
@@ -155,7 +156,7 @@ public class FullImage extends AppCompatActivity {
 
     public void OCRDetection() {
         final StringBuilder builder = new StringBuilder();
-        BitmapDrawable drawable = (BitmapDrawable) fullImageView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_FullPhotoView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
@@ -210,7 +211,7 @@ public class FullImage extends AppCompatActivity {
     //Face Detection
     public void FaceDetection() {
         final StringBuilder builder = new StringBuilder();
-        BitmapDrawable drawable = (BitmapDrawable) fullImageView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_FullPhotoView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionFaceDetectorOptions highAccuracyOpts =
@@ -279,7 +280,7 @@ public class FullImage extends AppCompatActivity {
     //Barcode Detection
     public void BarcodeDetection() {
         final StringBuilder builder = new StringBuilder();
-        BitmapDrawable drawable = (BitmapDrawable) fullImageView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_FullPhotoView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector();

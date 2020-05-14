@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,8 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +22,9 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -40,12 +41,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FirebaseImageML extends AppCompatActivity {
-    public static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    public static float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    String imagePath;
-    PhotoView photoView;
-    TextView textView;
-    Button label, ocr, face, barcode;
+    public static float sf_DeviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    public static float sf_DeviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    String s_ImagePath;
+    PhotoView pv_PhotoPreview;
+    MaterialTextView mTextView;
+    MaterialButton mbtn_LabelDetection, mbtn_OcrDetection, mbtn_FaceDetection, mbtn_BarcodeDetection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,47 +59,47 @@ public class FirebaseImageML extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        imagePath = intent.getExtras().getString("imagePath");
-        textView = findViewById(R.id.result);
-        photoView = findViewById(R.id.photoView);
-        label = findViewById(R.id.btn_label);
-        ocr = findViewById(R.id.btn_ocr);
-        face = findViewById(R.id.btn_face);
-        barcode = findViewById(R.id.btn_barcode);
+        s_ImagePath = intent.getExtras().getString("s_ImagePath");
+        mTextView = findViewById(R.id.mtv_firebaseimageml_results);
+        pv_PhotoPreview = findViewById(R.id.pv_firebaseimageml);
+        mbtn_LabelDetection = findViewById(R.id.mbtn_firebaseimageml_label);
+        mbtn_OcrDetection = findViewById(R.id.mbtn_firebaseimageml_ocr);
+        mbtn_FaceDetection = findViewById(R.id.mbtn_firebaseimageml_face);
+        mbtn_BarcodeDetection = findViewById(R.id.mbtn_firebaseimageml_barcode);
 
-        if (deviceHeight > deviceWidth) {
-            float screenRatio = deviceWidth / deviceHeight;
-            float photoViewHeight = deviceWidth * screenRatio;
-            photoView.getLayoutParams().height = (int) photoViewHeight;
-            photoView.requestLayout();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            float screenRatio = sf_DeviceWidth / sf_DeviceHeight;
+            float photoViewHeight = sf_DeviceWidth * screenRatio;
+            pv_PhotoPreview.getLayoutParams().height = (int) photoViewHeight;
+            pv_PhotoPreview.requestLayout();
         }
 
         Glide.with(this)
-                .load(imagePath)
-                .into(photoView);
+                .load(s_ImagePath)
+                .into(pv_PhotoPreview);
 
-        label.setOnClickListener(new View.OnClickListener() {
+        mbtn_LabelDetection.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 LabelDetection();
             }
         });
 
-        ocr.setOnClickListener(new View.OnClickListener() {
+        mbtn_OcrDetection.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 OCRDetection();
             }
         });
 
-        face.setOnClickListener(new View.OnClickListener() {
+        mbtn_FaceDetection.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 FaceDetection();
             }
         });
 
-        barcode.setOnClickListener(new View.OnClickListener() {
+        mbtn_BarcodeDetection.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
                 BarcodeDetection();
@@ -108,21 +109,21 @@ public class FirebaseImageML extends AppCompatActivity {
 
     //Show result of Firebase ML-Kit detection in TextView
     public void ShowDetection(final String title, final StringBuilder builder) {
-        textView.setText(null);
-        textView.setMovementMethod(new ScrollingMovementMethod());
+        mTextView.setText(null);
+        mTextView.setMovementMethod(new ScrollingMovementMethod());
         if (builder.length() != 0) {
-            textView.append(builder);
+            mTextView.append(builder);
         } else {
-            textView.append(title.substring(0, title.indexOf(' ')) + " detector didn't find anything!");
+            mTextView.append(title.substring(0, title.indexOf(' ')) + " detector didn't find anything!");
         }
         if (builder.length() != 0) {
-            textView.append("\n(hold the text to copy it!)");
-            textView.setOnLongClickListener(new View.OnLongClickListener() {
+            mTextView.append("\n(hold the text to copy it!)");
+            mTextView.setOnLongClickListener(new View.OnLongClickListener() {
                 public boolean onLongClick(View view) {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText(title, builder);
                     clipboard.setPrimaryClip(clip);
-                    Snackbar.make(findViewById(R.id.result), "Copied!", 500).show();
+                    Snackbar.make(findViewById(R.id.mtv_firebaseimageml_results), "Copied!", 500).show();
                     return true;
                 }
             });
@@ -131,10 +132,10 @@ public class FirebaseImageML extends AppCompatActivity {
 
     //Label Detection
     public void LabelDetection() {
-        textView.setText("label loading...");
+        mTextView.setText("label loading...");
         final StringBuilder builder = new StringBuilder();
         final ArrayList<String> labeltext = new ArrayList<String>();
-        BitmapDrawable drawable = (BitmapDrawable) photoView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
@@ -176,9 +177,9 @@ public class FirebaseImageML extends AppCompatActivity {
     }
 
     public void OCRDetection() {
-        textView.setText("ocr loading...");
+        mTextView.setText("ocr loading...");
         final StringBuilder builder = new StringBuilder();
-        BitmapDrawable drawable = (BitmapDrawable) photoView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
@@ -231,9 +232,9 @@ public class FirebaseImageML extends AppCompatActivity {
 
     //Face Detection
     public void FaceDetection() {
-        textView.setText("face loading...");
+        mTextView.setText("face loading...");
         final StringBuilder builder = new StringBuilder();
-        BitmapDrawable drawable = (BitmapDrawable) photoView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionFaceDetectorOptions highAccuracyOpts =
@@ -303,9 +304,9 @@ public class FirebaseImageML extends AppCompatActivity {
 
     //Barcode Detection
     public void BarcodeDetection() {
-        textView.setText("barcode loading...");
+        mTextView.setText("barcode loading...");
         final StringBuilder builder = new StringBuilder();
-        BitmapDrawable drawable = (BitmapDrawable) photoView.getDrawable();
+        BitmapDrawable drawable = (BitmapDrawable) pv_PhotoPreview.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
         FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance().getVisionBarcodeDetector();

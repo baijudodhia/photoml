@@ -14,7 +14,7 @@ import com.baijudodhia.photoml.R;
 import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
-    public final static int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    public final static int s_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 // Explain request for permission and try again
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, s_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 }, WELCOME_SCREEN_TIMEOUT);
             } else {
                 // Request the permission
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, s_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

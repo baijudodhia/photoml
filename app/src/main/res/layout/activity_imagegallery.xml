@@ -4,29 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_imagegallery_srlinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="Information for Swipe Down to Refresh the Gallery"
         android:text="Swipe down to retrieve new photos from device"
         android:textAlignment="center" />
-
     <!-- Pull down to swipe -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/Activity_SwipeToRefresh_ImageGallery"
+        android:id="@+id/srl_imagegallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <!-- RecyclerView to hold Photos -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/Activity_RecyclerViewPhotoGallery"
+            android:id="@+id/rv_imagegallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:animateLayoutChanges="false"
             android:nestedScrollingEnabled="false" />
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 </LinearLayout>

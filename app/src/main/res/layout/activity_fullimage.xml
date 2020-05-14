@@ -6,12 +6,11 @@
     tools:context=".activity.FullImage">
 
     <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/fullimage"
+        android:id="@+id/pv_fullimage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerInside"
+        android:contentDescription="Full Photo View"
         android:src="@color/colorPrimaryDark" />
-
 </RelativeLayout>

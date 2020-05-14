@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
 
     <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photoView"
+        android:id="@+id/pv_firebaseimageml"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="Photo" />
 
-    <TextView
-        android:id="@+id/result"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_firebaseimageml_results"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:autoLink="all|web|map|email"
         android:background="@color/whitesmoke"
+        android:contentDescription="Firebase ML-Kit Detection Results"
         android:isScrollContainer="true"
-        android:padding="5dp"
+        android:padding="10dp"
         android:scrollbars="vertical"
-        android:text="press any button below to begin..."
+        android:text="press any button to begin detection..."
+        android:textColorLink="@color/defaultLinkColor"
         android:textSize="16dp" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,37 +40,61 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_label"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbtn_firebaseimageml_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:text="Label" />
+                android:contentDescription="Label Detection using Firebase ML-Kit"
+                android:text="Label"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="normal"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
-            <Button
-                android:id="@+id/btn_ocr"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbtn_firebaseimageml_ocr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:text="OCR" />
+                android:contentDescription="Text Recognition using Firebase ML-Kit"
+                android:text="OCR"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="normal"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
-            <Button
-                android:id="@+id/btn_face"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbtn_firebaseimageml_face"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:text="Face" />
+                android:contentDescription="Face Detection using Firebase ML-Kit"
+                android:text="Face"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="normal"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
-            <Button
-                android:id="@+id/btn_barcode"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbtn_firebaseimageml_barcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:text="Barcode" />
+                android:contentDescription="Barcode Detection using Firebase ML-Kit"
+                android:text="Barcode"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="normal"
+                app:backgroundTint="@color/colorPrimaryDark" />
         </LinearLayout>
     </HorizontalScrollView>
 </LinearLayout>

@@ -36,9 +36,9 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     // binds the data to the TextView in each cell
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(holder.Adapter_ImageViewItem.getContext())
+        Glide.with(holder.iv_adapter_imagegallery.getContext())
                 .load(mData.get(position))
-                .into(holder.Adapter_ImageViewItem);
+                .into(holder.iv_adapter_imagegallery);
     }
 
     // total number of cells
@@ -64,11 +64,11 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView Adapter_ImageViewItem;
+        ImageView iv_adapter_imagegallery;
 
         ViewHolder(View itemView) {
             super(itemView);
-            Adapter_ImageViewItem = itemView.findViewById(R.id.Adapter_ImageViewItem);
+            iv_adapter_imagegallery = itemView.findViewById(R.id.iv_adapter_imagegallery);
             itemView.setOnClickListener(this);
         }
 

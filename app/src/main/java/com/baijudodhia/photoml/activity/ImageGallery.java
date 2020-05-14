@@ -22,13 +22,13 @@ import com.baijudodhia.photoml.adapters.ImageGalleryAdapter;
 import java.util.ArrayList;
 
 public class ImageGallery extends AppCompatActivity {
-    public static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    public static float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-    public int numberOfColumns;
+    public static float sf_DeviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    public static float sf_DeviceHEight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    public int i_ColumnCount;
     public RecyclerView recyclerView;
     ImageGalleryAdapter imageGalleryAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
-    ArrayList<String> imagesList = new ArrayList<>();
+    ArrayList<String> arrls_ImagePath = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +38,16 @@ public class ImageGallery extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#F5F5F5\">Photos</font>"));
 
-        //Initialization for numberOfColumns for GridLayoutManager during App launch
-        if (deviceHeight > deviceWidth) {
-            numberOfColumns = 3;
+        //Initialization for i_ColumnCount for GridLayoutManager during App launch
+        if (sf_DeviceHEight > sf_DeviceWidth) {
+            i_ColumnCount = 3;
         } else {
-            numberOfColumns = 5;
+            i_ColumnCount = 5;
         }
 
         SetLayout();
 
-        swipeRefreshLayout = findViewById(R.id.Activity_SwipeToRefresh_ImageGallery);
+        swipeRefreshLayout = findViewById(R.id.srl_imagegallery);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,9 +69,8 @@ public class ImageGallery extends AppCompatActivity {
                         MediaStore.Images.Media.DATE_TAKEN + " DESC");
         mCursor.moveToFirst();
         while (!mCursor.isAfterLast()) {
-            String data = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            System.out.println(data + "\n");
-            externalStorageImageUri.add(data);
+            String s_ImagePath = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            externalStorageImageUri.add(s_ImagePath);
             mCursor.moveToNext();
         }
         mCursor.close();
@@ -79,20 +78,20 @@ public class ImageGallery extends AppCompatActivity {
     }
 
     public void SetLayout() {
-        imagesList = FetchExternalStorageImageMedia(this);
-        imageGalleryAdapter = new ImageGalleryAdapter(this, imagesList);
+        arrls_ImagePath = FetchExternalStorageImageMedia(this);
+        imageGalleryAdapter = new ImageGalleryAdapter(this, arrls_ImagePath);
 
-        recyclerView = findViewById(R.id.Activity_RecyclerViewPhotoGallery);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        recyclerView = findViewById(R.id.rv_imagegallery);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, i_ColumnCount));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(imageGalleryAdapter);
 
         imageGalleryAdapter.setClickListener(new ImageGalleryAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent fullimage = new Intent(ImageGallery.this, FullImage.class);
-                fullimage.putExtra("imagePath", imagesList.get(position));
-                startActivity(fullimage);
+                Intent intent = new Intent(ImageGallery.this, FullImage.class);
+                intent.putExtra("s_ImagePath", arrls_ImagePath.get(position));
+                startActivity(intent);
             }
         });
     }
@@ -102,11 +101,11 @@ public class ImageGallery extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            numberOfColumns = 5;
-            recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+            i_ColumnCount = 5;
+            recyclerView.setLayoutManager(new GridLayoutManager(this, i_ColumnCount));
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            numberOfColumns = 3;
-            recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+            i_ColumnCount = 3;
+            recyclerView.setLayoutManager(new GridLayoutManager(this, i_ColumnCount));
         }
     }
 }
