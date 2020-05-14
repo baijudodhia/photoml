@@ -39,7 +39,7 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageScan extends AppCompatActivity {
+public class FirebaseImageML extends AppCompatActivity {
     public static float deviceWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     public static float deviceHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     String imagePath;
@@ -50,7 +50,7 @@ public class ImageScan extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_imagescan);
+        setContentView(R.layout.activity_firebaseimageml);
 
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));

@@ -70,8 +70,8 @@ public class FullImage extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.menu_actionbar_tab) {
-            Intent intent = new Intent(this, ImageScan.class);
+        if (id == R.id.menu_actionbar_firebaseimageml) {
+            Intent intent = new Intent(this, FirebaseImageML.class);
             intent.putExtra("imagePath", imagePath);
             startActivity(intent);
         }

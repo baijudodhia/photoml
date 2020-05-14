@@ -31,8 +31,8 @@
             android:parentActivityName=".activity.FullImage"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
         <activity
-            android:name=".activity.ImageScan"
-            android:parentActivityName=".activity.ImageScan"
+            android:name=".activity.FirebaseImageML"
+            android:parentActivityName=".activity.FirebaseImageML"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar" />
     </application>
 
