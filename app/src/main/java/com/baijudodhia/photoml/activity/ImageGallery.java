@@ -14,6 +14,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.baijudodhia.photoml.R;
 import com.baijudodhia.photoml.adapters.ImageGalleryAdapter;
@@ -26,6 +27,7 @@ public class ImageGallery extends AppCompatActivity {
     public int numberOfColumns;
     public RecyclerView recyclerView;
     ImageGalleryAdapter imageGalleryAdapter;
+    SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<String> imagesList = new ArrayList<>();
 
     @Override
@@ -43,20 +45,15 @@ public class ImageGallery extends AppCompatActivity {
             numberOfColumns = 5;
         }
 
-        imagesList = FetchExternalStorageImageMedia(this);
-        imageGalleryAdapter = new ImageGalleryAdapter(this, imagesList);
+        SetLayout();
 
-        recyclerView = findViewById(R.id.Activity_RecyclerViewPhotoGallery);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(imageGalleryAdapter);
-
-        imageGalleryAdapter.setClickListener(new ImageGalleryAdapter.ItemClickListener() {
+        swipeRefreshLayout = findViewById(R.id.Activity_SwipeToRefresh_ImageGallery);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                Intent fullimage = new Intent(ImageGallery.this, FullImage.class);
-                fullimage.putExtra("imagePath", imagesList.get(position));
-                startActivity(fullimage);
+            public void onRefresh() {
+                //Code to retrieve newly added images from device
+                SetLayout();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -79,6 +76,25 @@ public class ImageGallery extends AppCompatActivity {
         }
         mCursor.close();
         return externalStorageImageUri;
+    }
+
+    public void SetLayout() {
+        imagesList = FetchExternalStorageImageMedia(this);
+        imageGalleryAdapter = new ImageGalleryAdapter(this, imagesList);
+
+        recyclerView = findViewById(R.id.Activity_RecyclerViewPhotoGallery);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(imageGalleryAdapter);
+
+        imageGalleryAdapter.setClickListener(new ImageGalleryAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent fullimage = new Intent(ImageGallery.this, FullImage.class);
+                fullimage.putExtra("imagePath", imagesList.get(position));
+                startActivity(fullimage);
+            }
+        });
     }
 
     @Override

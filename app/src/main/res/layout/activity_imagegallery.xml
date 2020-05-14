@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <!-- RecyclerView to hold Photos -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Activity_RecyclerViewPhotoGallery"
+
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:animateLayoutChanges="false"
-        android:nestedScrollingEnabled="false" />
+        android:layout_height="wrap_content"
+        android:text="Swipe down to retrieve new photos from device"
+        android:textAlignment="center" />
 
-</RelativeLayout>
+    <!-- Pull down to swipe -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/Activity_SwipeToRefresh_ImageGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- RecyclerView to hold Photos -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/Activity_RecyclerViewPhotoGallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:animateLayoutChanges="false"
+            android:nestedScrollingEnabled="false" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>
