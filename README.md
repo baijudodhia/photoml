@@ -1,6 +1,10 @@
-# <img src="https://github.com/baijudodhia/photoml/blob/master/app/src/main/assets/photomllogoedited.png" align="left" width="45" style="margin-right:10px;">PhotoML Android App
+<img src="https://github.com/baijudodhia/photoml/blob/master/app/src/main/assets/photomllogoedited.png" align="left" width="50" style="margin-right:10px;">   
 
-PhotoML is an Android App to demonstrate FirebaseVision ML-Kit Tasks like Label detection, Optical Character Recognition/Text Recognition, Face detection and Barcode scanning on images selected from in-built gallery viewer without having to upload the image from device for every new image. The app supports both portrait and landscape layouts.
+<br />
+
+# PhotoML Android App  
+
+PhotoML is an Android App to demonstrate **on-device** FirebaseVision ML-Kit Tasks like _Label detection_, _Optical Character Recognition/Text Recognition_, _Face detection_ and _Barcode scanning_ on images selected from in-built gallery viewer without having to upload the image from device for every new image. The app supports both portrait and landscape layouts.
 
 ## Screenshots
 ![Label Portrait](https://github.com/baijudodhia/photoml/blob/master/screenrecords/PortraitLabel.gif)
@@ -8,10 +12,21 @@ PhotoML is an Android App to demonstrate FirebaseVision ML-Kit Tasks like Label 
 ![Face Portrait](https://github.com/baijudodhia/photoml/blob/master/screenrecords/PortraitFace.gif)
 ![Barcode Portrait](https://github.com/baijudodhia/photoml/blob/master/screenrecords/PortraitBarcode.gif)
 
+## Debug APK
+Download from [here](https://github.com/baijudodhia/photoml/blob/master/apk/photoml-debug-app.apk).
+
 ## Installation
 Clone this repository and import into **Android Studio**
 ```bash
 git clone https://github.com/baijudodhia/photoml.git
+```
+
+## Android Permissions
+
+The app requires Read-only Storage permissions
+Add the following code in the **AndroidManifest.xml** file to access Storage
+```bash
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
 
 ## Firebase Setup
