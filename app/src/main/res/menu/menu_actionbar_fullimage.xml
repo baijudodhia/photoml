@@ -8,4 +8,11 @@
         android:orderInCategory="0"
         android:title="@string/menu_activity_actionbar_fullimage_item_firebaseimageml_text"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_actionbar_shareimage"
+        android:contentDescription="@string/menu_activity_actionbar_fullimage_item_share_contentdescription"
+        android:icon="@mipmap/action_share_foreground"
+        android:orderInCategory="1"
+        android:title="@string/menu_activity_actionbar_fullimage_item_share_text"
+        app:showAsAction="ifRoom" />
 </menu>

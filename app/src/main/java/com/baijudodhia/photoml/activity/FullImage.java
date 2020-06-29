@@ -2,6 +2,7 @@ package com.baijudodhia.photoml.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.baijudodhia.photoml.R;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
+
+import java.io.File;
 
 public class FullImage extends AppCompatActivity {
     String s_ImagePath;
@@ -50,6 +53,14 @@ public class FullImage extends AppCompatActivity {
             Intent intent = new Intent(this, FirebaseImageML.class);
             intent.putExtra("s_ImagePath", s_ImagePath);
             startActivity(intent);
+        }
+        if (id == R.id.menu_actionbar_shareimage) {
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/*");
+            File imageFileToShare = new File(s_ImagePath);
+            Uri uri = Uri.fromFile(imageFileToShare);
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+            startActivity(Intent.createChooser(share, "Share Image!"));
         }
         return super.onOptionsItemSelected(item);
     }

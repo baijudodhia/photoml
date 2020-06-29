@@ -10,6 +10,8 @@
     <string name="layout_activity_fullimage_pv_contentdescription">Full Photo View</string>
     <string name="menu_activity_actionbar_fullimage_item_firebaseimageml_contentdescription">Firebase Image ML</string>
     <string name="menu_activity_actionbar_fullimage_item_firebaseimageml_text">Firebase Image ML</string>
+    <string name="menu_activity_actionbar_fullimage_item_share_contentdescription">Share Image</string>
+    <string name="menu_activity_actionbar_fullimage_item_share_text">Share Image</string>
 
     <!-- Activity FirebaseImageML -->
     <string name="layout_activity_firebaseimageml_pv_contentdescription">Photo</string>
