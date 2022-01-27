@@ -1,22 +1,28 @@
-<img src="https://github.com/baijudodhia/photoml/blob/master/app/src/main/assets/photomllogoedited.png" align="left" width="50" style="margin-right:10px;">   
+<img src="https://baijudodhia.github.io/photoml/app/src/main/assets/photomllogoedited.png" align="left" width="50" style="margin-right:10px;">
 
 <br />
 
-# PhotoML Android App  
+# PhotoML Android App
 
 PhotoML is an Android App to demonstrate **on-device** FirebaseVision ML-Kit Tasks like _Label detection_, _Optical Character Recognition/Text Recognition_, _Face detection_ and _Barcode scanning_ on images selected from in-built gallery viewer without having to upload the image from device for every new image. The app supports both portrait and landscape layouts.
 
 ## Screenshots
-![Label Portrait](https://github.com/baijudodhia/photoml/blob/master/screenrecords/PortraitLabel.gif)
-![OCR Portrait](https://github.com/baijudodhia/photoml/blob/master/screenrecords/PortraitOCR.gif)
-![Face Portrait](https://github.com/baijudodhia/photoml/blob/master/screenrecords/PortraitFace.gif)
-![Barcode Portrait](https://github.com/baijudodhia/photoml/blob/master/screenrecords/PortraitBarcode.gif)
+
+<p align="center">
+  <img width="200" src="https://baijudodhia.github.io/photoml/screenrecords/PortraitLabel.gif" alt="Label Portrait" title="Label Portrait">
+  <img width="200" src="https://baijudodhia.github.io/photoml/screenrecords/PortraitOCR.gif" alt="OCR Portrait" title="OCR Portrait">
+  <img width="200" src="https://baijudodhia.github.io/photoml/screenrecords/PortraitFace.gif" alt="Face Portrait" title="Face Portrait">
+  <img width="200" src="https://baijudodhia.github.io/photoml/screenrecords/PortraitBarcode.gif" alt="Barcode Portrait" title="Barcode Portrait">
+</p>
 
 ## Debug APK
-Download from [here](https://github.com/baijudodhia/photoml/blob/master/apk/photoml-debug-app.apk).
+
+Download from [here](https://baijudodhia.github.io/photoml/apk/photoml-debug-app.apk).
 
 ## Installation
+
 Clone this repository and import into **Android Studio**
+
 ```bash
 git clone https://github.com/baijudodhia/photoml.git
 ```
@@ -25,11 +31,13 @@ git clone https://github.com/baijudodhia/photoml.git
 
 The app requires Read-only Storage permissions
 Add the following code in the **AndroidManifest.xml** file to access Storage
-```bash
+
+```java
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
 
 ## Firebase Setup
+
 1. Go to [Firebase Console](https://console.firebase.google.com)
 2. Sign in with your google account.
 3. Add new project > Enter project name > Skip analytics > Create project.
@@ -39,17 +47,24 @@ Add the following code in the **AndroidManifest.xml** file to access Storage
 ## Dependencies
 
 1. Add the following dependencies in the **build.gradle (Module:Project)** file
+
 - Firebase dependency
-```bash
+
+```java
 classpath 'com.google.gms:google-services:4.3.3'
 ```
+
 2. Add the following dependencies in the **build.gradle (Module:App)** file
+
 - Apply Firebase plugin
-```bash
+
+```java
 apply plugin: 'com.google.gms.google-services'
 ```
+
 - Android dependencies
-```bash
+
+```java
 //AndroidX dependencies
 implementation 'androidx.appcompat:appcompat:1.1.0'
 implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -61,8 +76,10 @@ androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 //Material Design Dependency
 implementation "com.google.android.material:material:1.1.0"
 ```
+
 - 3rd Party dependencies
-```bash
+
+```java
 //RecyclerView Dependencies
 implementation 'androidx.appcompat:appcompat:1.0.0'
 implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -74,8 +91,10 @@ annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 //PhotoView Dependency for auto image zooming and double tap and pinch zoom replacing ImageView
 implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 ```
+
 - Firebase dependencies
-```bash
+
+```java
 //Firebase ML-Kit general dependency, also used for OCR and Barcode
 implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
 
@@ -92,4 +111,4 @@ All assets belong to their respective owners. A list of reference is provided to
 
 1. Firebase Logo from [Firebase](https://firebase.google.com/brand-guidelines).
 2. App Logo (Colors Edited) from [Flaticon](https://www.flaticon.com/free-icon/gallery_758462?term=gallery&page=1&position=40).
-3. Flaticon License available [here](https://github.com/baijudodhia/photoml/blob/master/app/src/main/assets/FlaticonLicense.pdf).
+3. Flaticon License available [here](https://baijudodhia.github.io/photoml/app/src/main/assets/FlaticonLicense.pdf).
